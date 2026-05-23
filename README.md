@@ -2,6 +2,10 @@
 
 A fully functional YouTube clone built with **React.js** that replicates core YouTube features including live chat simulation, nested comments, video search with suggestions, and responsive design.
 
+## 🌐 Live Demo
+
+🔗 [View Live](https://your-live-url.com)
+
 ---
 
 ## 🚀 Features
@@ -137,6 +141,7 @@ npm start
 ![Watch Video Page](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093703.png)
 ![Comments](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093719.png)
 ![Suggestions](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093742.png)
+
 ---
 
 ## 🙌 Acknowledgements
