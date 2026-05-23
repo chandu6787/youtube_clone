@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# 📺 YouTube Clone
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A fully functional YouTube clone built with **React.js** that replicates core YouTube features including live chat simulation, nested comments, video search with suggestions, and responsive design.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 🔍 Search with Debouncing
+- Real-time search suggestions powered by the **YouTube Suggestions API**
+- Debounced API calls (200ms delay) to minimize unnecessary requests
+- Results cached in Redux store to avoid redundant API calls
+- Suggestions disappear on scroll or blur
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🎬 Video Playback
+- Embedded YouTube player via **YouTube Data API v3**
+- Fetches trending/popular videos on the home page
+- Click any video card to watch it seamlessly
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 💬 Live Chat Simulation
+- Auto-generates chat messages every 2 seconds with random usernames
+- New messages appear at the top (latest first) with smooth scrolling
+- Users can type and send their own messages
+- Built using `setInterval` and Redux for state management
 
-### `npm test`
+### 🗨️ Nested Comments
+- Recursive comment structure supporting **unlimited nesting levels**
+- Visual indentation with left border to clearly show reply threads
+- Built using a recursive `CommentList` component
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🗂️ Redux State Management
+- Centralized store managing:
+  - Sidebar open/close state
+  - Search suggestion cache
+  - Live chat messages
+- Prevents prop drilling across components
 
-### `npm run build`
+### 📱 Responsive Design
+- Fully responsive across mobile, tablet, and desktop
+- Video + Live Chat stacks vertically on smaller screens
+- Horizontally scrollable category filter buttons on mobile
+- Adaptive video grid (1 → 2 → 3 → 4 columns)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Technology | Usage |
+|---|---|
+| React.js | UI framework |
+| Redux Toolkit | Global state management |
+| React Router DOM | Client-side routing |
+| Tailwind CSS | Styling & responsiveness |
+| YouTube Data API v3 | Fetching videos |
+| YouTube Suggestions API | Search autocomplete |
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📁 Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+src/
+├── components/
+│   ├── Head.js           # Navbar with search & debouncing
+│   ├── Body.js           # Layout with sidebar + outlet
+│   ├── SideBar.js        # Collapsible sidebar
+│   ├── MainContainer.js  # Home page container
+│   ├── ButtonList.js     # Category filter buttons
+│   ├── VideoContainer.js # Video grid
+│   ├── VideoCard.js      # Individual video card
+│   ├── WatchVideo.js     # Video player page
+│   ├── LiveChat.js       # Live chat simulation
+│   ├── ChatMessage.js    # Single chat message
+│   └── CommentsContainer.js # Nested comments
+└── utils/
+    ├── store.js          # Redux store
+    ├── configSlice.js    # Sidebar state
+    ├── searchSlice.js    # Search cache
+    ├── chatSlice.js      # Live chat messages
+    ├── constants.js      # API URLs & keys
+    └── helper.js         # Random name/message generators
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## ⚙️ Getting Started
 
-## Learn More
+### 1. Clone the repository
+```bash
+git clone https://github.com/chandu6787/youtube_clone.git
+cd youtube_clone
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. Install dependencies
+```bash
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Add your YouTube API key
+In `src/utils/constants.js`:
+```js
+export const YOUTUBE_API_KEY = "YOUR_API_KEY_HERE";
+```
 
-### Code Splitting
+> Get your API key from [Google Cloud Console](https://console.cloud.google.com) → Enable **YouTube Data API v3** → Credentials → Create API Key
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 4. Start the app
+```bash
+npm start
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔑 APIs Used
 
-### Making a Progressive Web App
+| API | Purpose |
+|---|---|
+| `googleapis.com/youtube/v3/videos` | Fetch trending videos |
+| `googleapis.com/youtube/v3/search` | Search videos by query |
+| `suggestqueries.google.com` | Search autocomplete suggestions |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 💡 Key Concepts Implemented
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Debouncing** — limits API calls while typing in search
+- **Memoization** — caches search results in Redux to avoid repeat calls
+- **Recursive Components** — nested comments rendered with recursion
+- **Real-time Simulation** — live chat powered by `setInterval`
+- **Code Splitting** — React Router lazy loads pages
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📸 Screenshots
 
-### `npm run build` fails to minify
+> Add screenshots here
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🙌 Acknowledgements
+
+- [YouTube Data API v3](https://developers.google.com/youtube/v3)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Redux Toolkit](https://redux-toolkit.js.org)
