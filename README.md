@@ -4,7 +4,7 @@ A fully functional YouTube clone built with **React.js** that replicates core Yo
 
 ## 🌐 Live Demo
 
-🔗 [View Live](https://your-live-url.com)
+🔗 [View Live](https://youtube-clone-fku5.vercel.app/watch?v=sdXPt-lgbE0)
 
 ---
 
