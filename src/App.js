@@ -3,7 +3,6 @@ import Body from "./components/Body";
 import store from "./utils/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainContainer from "./components/MainContainer";
 import WatchVideo from "./components/WatchVideo";
 const appRouter = createBrowserRouter([
   {

@@ -1,4 +1,3 @@
-import { comment } from "postcss";
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 
@@ -88,7 +87,7 @@ let commentsData = [
   },
 ];
 const Comment = ({ data }) => {
-  const { name, text, replies } = data;
+  const { name, text } = data;
 
   return (
     <div className="flex shadow-sm bg-gray-200 rounded-lg p-2 items-center m-1">

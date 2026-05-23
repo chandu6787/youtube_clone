@@ -19,20 +19,22 @@ const Head = () => {
   };
   const navigate = useNavigate();
 
-  const getSearchResults = async () => {
-    try {
-      const response = await fetch(
-        `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(searchQuery)}`,
-      );
-      const data = await response.json();
-      setSuggestions(data[1] || []);
-      dispatch(cacheResults({ [searchQuery]: data[1] }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const getSearchResults = async () => {
+      try {
+        const response = await fetch(
+          `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(
+            searchQuery,
+          )}`,
+        );
+        const data = await response.json();
+        setSuggestions(data[1] || []);
+        dispatch(cacheResults({ [searchQuery]: data[1] }));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     const id = setTimeout(() => {
       if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
@@ -40,8 +42,9 @@ const Head = () => {
         getSearchResults();
       }
     }, 200);
+
     return () => clearTimeout(id);
-  }, [searchQuery]);
+  }, [searchQuery, searchCache, dispatch]);
 
   // ✅ Hide suggestions on scroll
   useEffect(() => {

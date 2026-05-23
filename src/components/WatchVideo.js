@@ -10,7 +10,7 @@ const WatchVideo = () => {
   const id = searchParams.get("v");
   useEffect(() => {
     dispatch(closeMenu());
-  }, []);
+  }, [dispatch]);
 
   if (!id) {
     return (
@@ -20,28 +20,26 @@ const WatchVideo = () => {
     );
   }
 
-  
-return (
-  <div className="w-full">
-    <div className="flex flex-col lg:flex-row w-full">
-      <div className="w-full lg:w-[70%] p-3">
-        <iframe
-          className="w-full h-[250px] sm:h-[400px] lg:h-[560px]"
-          src={"https://www.youtube.com/embed/" + id}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
+  return (
+    <div className="w-full">
+      <div className="flex flex-col lg:flex-row w-full">
+        <div className="w-full lg:w-[70%] p-3">
+          <iframe
+            className="w-full h-[250px] sm:h-[400px] lg:h-[560px]"
+            src={"https://www.youtube.com/embed/" + id}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+        <div className="w-full lg:w-[30%] p-2">
+          <LiveChat />
+        </div>
       </div>
-      <div className="w-full lg:w-[30%] p-2">
-        <LiveChat />
-      </div>
+      <CommentsContainer />
     </div>
-    <CommentsContainer />
-  </div>
-
   );
 };
 
