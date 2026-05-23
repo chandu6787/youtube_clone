@@ -134,7 +134,7 @@ npm start
 ## 📸 Screenshots
 
 ![Home Page](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093643.png)
-![Watch Video Page] (https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093703.png)
+![Watch Video Page](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093703.png)
 ![Comments](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093719.png)
 ![Suggestions](https://github.com/chandu6787/youtube_clone/blob/507462e7cec7524ea7e2c635e924e73edff4352e/Screenshot%202026-05-23%20093742.png)
 ---
