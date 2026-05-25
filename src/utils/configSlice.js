@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const configSlice=createSlice({
     name:"config",
     initialState:{
-        isMenuOpen:true
+        isMenuOpen:false
     },
     reducers:{
         toggleMenu:(state)=>{
