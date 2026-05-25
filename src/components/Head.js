@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserCircle } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
@@ -13,6 +13,7 @@ const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const isTouchingRef = useRef(false); // tracks if user is touching a suggestion
 
   const handleToggleMenu = () => {
     dispatch(toggleMenu());
@@ -24,8 +25,8 @@ const Head = () => {
       try {
         const response = await fetch(
           `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(
-            searchQuery,
-          )}`,
+            searchQuery
+          )}`
         );
         const data = await response.json();
         setSuggestions(data[1] || []);
@@ -36,6 +37,10 @@ const Head = () => {
     };
 
     const id = setTimeout(() => {
+      if (searchQuery.trim() === "") {
+        setSuggestions([]);
+        return;
+      }
       if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
       } else {
@@ -46,12 +51,29 @@ const Head = () => {
     return () => clearTimeout(id);
   }, [searchQuery, searchCache, dispatch]);
 
-  // ✅ Hide suggestions on scroll
+  // Hide suggestions on scroll
   useEffect(() => {
     const handleScroll = () => setShowSuggestions(false);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSelectSuggestion = (item) => {
+    setSearchQuery(item);
+    setShowSuggestions(false);
+    navigate(`/?q=${encodeURIComponent(item)}`);
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setShowSuggestions(false);
+      navigate(`/?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
 
   return (
     <div className="grid grid-cols-[auto_1fr_auto] items-center shadow px-2 py-1">
@@ -66,6 +88,7 @@ const Head = () => {
           className="h-10 ml-3 hidden sm:block"
         />
       </div>
+
       <div className="px-4 py-2 relative">
         <div className="flex">
           <input
@@ -74,35 +97,54 @@ const Head = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onKeyDown={handleKeyDown}
+            onBlur={() => {
+              // Don't close if user is touching a suggestion (mobile)
+              if (!isTouchingRef.current) {
+                setShowSuggestions(false);
+              }
+            }}
           />
-          <button className="border border-gray-400 rounded-r-full px-3 py-2 bg-white">
+          <button
+            className="border border-gray-400 rounded-r-full px-3 py-2 bg-white"
+            onClick={handleSearch}
+          >
             <FiSearch size={20} />
           </button>
         </div>
-        {showSuggestions && (
-          <div className="absolute z-50 bg-white w-full left-4 right-4 rounded-lg shadow-lg">
+
+        {showSuggestions && suggestions.length > 0 && (
+          <div className="absolute z-50 bg-white left-4 right-4 rounded-lg shadow-lg overflow-hidden">
             <ul>
               {suggestions.map((item, i) => (
-                <div
+                <li
                   key={i}
-                  role="button"
-                  onMouseDown={() => {
-                    // use onMouseDown so it fires before input blur
-                    setSearchQuery(item);
-                    setShowSuggestions(false);
-                    navigate(`/?q=${encodeURIComponent(item)}`);
+                  // onTouchStart: fires first on mobile, sets the flag so onBlur won't close suggestions
+                  onTouchStart={() => {
+                    isTouchingRef.current = true;
                   }}
-                  className="flex w-full hover:bg-gray-200 items-center p-2 rounded-lg cursor-pointer"
+                  // onTouchEnd: fires on lift, actually performs the selection
+                  onTouchEnd={(e) => {
+                    e.preventDefault(); // prevent ghost click
+                    isTouchingRef.current = false;
+                    handleSelectSuggestion(item);
+                  }}
+                  // onMouseDown: fires before onBlur on desktop
+                  onMouseDown={(e) => {
+                    e.preventDefault(); // prevent input losing focus / onBlur firing
+                    handleSelectSuggestion(item);
+                  }}
+                  className="flex w-full hover:bg-gray-200 active:bg-gray-300 items-center p-3 cursor-pointer"
                 >
-                  <FiSearch size={16} />
-                  <li className="py-1 pl-2 text-sm">{item}</li>
-                </div>
+                  <FiSearch size={16} className="shrink-0" />
+                  <span className="py-1 pl-2 text-sm truncate">{item}</span>
+                </li>
               ))}
             </ul>
           </div>
         )}
       </div>
+
       <div className="flex items-center pr-2">
         <FaUserCircle size={24} />
       </div>
